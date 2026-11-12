@@ -255,55 +255,55 @@ const phases=[
 
 const days=[
   // ── Phase 1: 山东 ──
-  {d:1,from:'淄博',to:'沂源',km:90,note:'进入沂蒙山区，有爬升，初日不宜太快（高德实测约88.5km）',phase:1,lat1:36.81,lng1:118.05,lat2:36.18,lng2:118.17,city:'沂源',hotel:['全季酒店(沂源店)','沂源县城区','全季'],price:150},
-  {d:2,from:'沂源',to:'沂水',km:65,note:'沂蒙山区骑行，经鲁山，路况多起伏',phase:1,lat1:36.18,lng1:118.17,lat2:35.79,lng2:118.63,city:'沂水',hotel:['汉庭酒店(沂水店)','沂水县城区','汉庭'],price:130},
-  {d:3,from:'沂水',to:'临沂',km:90,note:'下山为主，沿G206南下，路况好转',phase:1,lat1:35.79,lng1:118.63,lat2:35.10,lng2:118.35,city:'临沂',hotel:['亚朵·泰盛广场万象汇店','通达路89号 · 2025年新开','亚朵'],price:250},
-  {d:4,from:'临沂',to:'台儿庄',km:95,note:'台儿庄古城，抗战名城，夜景很美',phase:1,lat1:35.10,lng1:118.35,lat2:34.56,lng2:117.73,city:'枣庄',hotel:['全季酒店(台儿庄古城店)','台儿庄古城附近','全季'],price:180},
-  {d:5,from:'台儿庄',to:'徐州',km:75,note:'进入江苏，云龙湖、户部山，两汉文化重镇',phase:1,lat1:34.56,lng1:117.73,lat2:34.26,lng2:117.19,city:'徐州',hotel:['亚朵·苏宁广场店','中山北路','亚朵'],price:240},
+  {d:1,from:'黄金国际北门',to:'沂源',km:90,note:'张店区出发，进入沂蒙山区，有爬升，初日不宜太快',phase:1,lat1:36.806,lng1:118.038,lat2:36.18,lng2:118.17,city:'沂源'},
+  {d:2,from:'沂源',to:'沂水',km:65,note:'沂蒙山区骑行，经鲁山，路况多起伏',phase:1,lat1:36.18,lng1:118.17,lat2:35.79,lng2:118.63,city:'沂水'},
+  {d:3,from:'沂水',to:'临沂',km:90,note:'下山为主，沿G206南下，路况好转',phase:1,lat1:35.79,lng1:118.63,lat2:35.10,lng2:118.35,city:'临沂'},
+  {d:4,from:'临沂',to:'台儿庄',km:95,note:'台儿庄古城，抗战名城，夜景很美',phase:1,lat1:35.10,lng1:118.35,lat2:34.56,lng2:117.73,city:'枣庄'},
+  {d:5,from:'台儿庄',to:'徐州',km:75,note:'进入江苏，云龙湖、户部山，两汉文化重镇',phase:1,lat1:34.56,lng1:117.73,lat2:34.26,lng2:117.19,city:'徐州'},
   // ── Phase 2: 皖北平原 ──
-  {d:6,from:'徐州',to:'宿州',km:85,note:'跨省入皖，平原骑行，一马平川',phase:2,lat1:34.26,lng1:117.19,lat2:33.64,lng2:116.98,city:'宿州',hotel:['全季酒店(宿州万达广场店)','万达商圈','全季'],price:170},
-  {d:7,from:'宿州',to:'固镇',km:55,note:'皖北平原南下，沿G206',phase:2,lat1:33.64,lng1:116.98,lat2:33.32,lng2:117.32,city:'固镇',hotel:['汉庭酒店(固镇店)','固镇县城区','汉庭'],price:120},
-  {d:8,from:'固镇',to:'蚌埠',km:50,note:'淮河之城，蚌埠南山文化古迹',phase:2,lat1:33.32,lng1:117.32,lat2:32.92,lng2:117.39,city:'蚌埠',hotel:['全季酒店(蚌埠万达广场店)','万达商圈','全季'],price:170},
-  {d:9,from:'蚌埠',to:'定远',km:70,note:'沿G3方向南下，皖中腹地',phase:2,lat1:32.92,lng1:117.39,lat2:32.51,lng2:117.68,city:'定远',hotel:['汉庭酒店(定远店)','定远县城区','汉庭'],price:120},
-  {d:10,from:'定远',to:'合肥',km:65,note:'安徽省会，包公祠、逍遥津',phase:2,lat1:32.51,lng1:117.68,lat2:31.82,lng2:117.23,city:'合肥',hotel:['亚朵·天鹅湖万达广场店','天鹅湖商圈','亚朵'],price:260},
-  {d:11,from:'合肥',to:'桐城',km:95,note:'桐城文派发源地，六尺巷值得看',phase:2,lat1:31.82,lng1:117.23,lat2:31.05,lng2:116.97,city:'桐城',hotel:['汉庭酒店(桐城店)','桐城市区','汉庭'],price:140},
-  {d:12,from:'桐城',to:'安庆',km:60,note:'轻松到达，安庆是黄梅戏之乡',phase:2,lat1:31.05,lng1:116.97,lat2:30.53,lng2:117.06,city:'安庆',hotel:['全季酒店(安庆人民路步行街店)','人民路步行街','全季'],price:180},
+  {d:6,from:'徐州',to:'宿州',km:85,note:'跨省入皖，平原骑行，一马平川',phase:2,lat1:34.26,lng1:117.19,lat2:33.64,lng2:116.98,city:'宿州'},
+  {d:7,from:'宿州',to:'固镇',km:55,note:'皖北平原南下，沿G206',phase:2,lat1:33.64,lng1:116.98,lat2:33.32,lng2:117.32,city:'固镇'},
+  {d:8,from:'固镇',to:'蚌埠',km:50,note:'淮河之城，蚌埠南山文化古迹',phase:2,lat1:33.32,lng1:117.32,lat2:32.92,lng2:117.39,city:'蚌埠'},
+  {d:9,from:'蚌埠',to:'定远',km:70,note:'沿G3方向南下，皖中腹地',phase:2,lat1:32.92,lng1:117.39,lat2:32.51,lng2:117.68,city:'定远'},
+  {d:10,from:'定远',to:'合肥',km:65,note:'安徽省会，包公祠、逍遥津',phase:2,lat1:32.51,lng1:117.68,lat2:31.82,lng2:117.23,city:'合肥'},
+  {d:11,from:'合肥',to:'桐城',km:95,note:'桐城文派发源地，六尺巷值得看',phase:2,lat1:31.82,lng1:117.23,lat2:31.05,lng2:116.97,city:'桐城'},
+  {d:12,from:'桐城',to:'安庆',km:60,note:'轻松到达，安庆是黄梅戏之乡',phase:2,lat1:31.05,lng1:116.97,lat2:30.53,lng2:117.06,city:'安庆'},
   // ── Phase 3: 横渡长江入赣 ──
-  {d:13,from:'安庆',to:'望江',km:75,note:'沿长江南岸骑行，江景壮阔',phase:3,lat1:30.53,lng1:117.06,lat2:30.13,lng2:116.55,city:'望江',hotel:['汉庭酒店(望江店)','望江县城区','汉庭'],price:120},
-  {d:14,from:'望江',to:'九江',km:85,note:'经宿松、彭泽，到达庐山脚下',phase:3,lat1:30.13,lng1:116.55,lat2:29.71,lng2:115.97,city:'九江',hotel:['亚朵·九江火车站店','火车站商圈','亚朵'],price:220},
-  {d:15,from:'九江',to:'共青城',km:70,note:'鄱阳湖畔骑行，湖光山色',phase:3,lat1:29.71,lng1:115.97,lat2:29.25,lng2:115.81,city:'共青城',hotel:['汉庭酒店(共青城店)','共青城市区','汉庭'],price:130},
-  {d:16,from:'共青城',to:'南昌',km:70,note:'滕王阁、八一广场、南昌拌粉瓦罐汤',phase:3,lat1:29.25,lng1:115.81,lat2:28.68,lng2:115.86,city:'南昌',hotel:['亚朵·八一广场地铁站店','八一广场附近','亚朵'],price:240},
+  {d:13,from:'安庆',to:'望江',km:75,note:'沿长江南岸骑行，江景壮阔',phase:3,lat1:30.53,lng1:117.06,lat2:30.13,lng2:116.55,city:'望江'},
+  {d:14,from:'望江',to:'九江',km:85,note:'经宿松、彭泽，到达庐山脚下',phase:3,lat1:30.13,lng1:116.55,lat2:29.71,lng2:115.97,city:'九江'},
+  {d:15,from:'九江',to:'共青城',km:70,note:'鄱阳湖畔骑行，湖光山色',phase:3,lat1:29.71,lng1:115.97,lat2:29.25,lng2:115.81,city:'共青城'},
+  {d:16,from:'共青城',to:'南昌',km:70,note:'滕王阁、八一广场、南昌拌粉瓦罐汤',phase:3,lat1:29.25,lng1:115.81,lat2:28.68,lng2:115.86,city:'南昌'},
   // ── Phase 4: 赣中南下 ──
-  {d:17,from:'南昌',to:'丰城',km:80,note:'赣江西岸南下，平坦好骑',phase:4,lat1:28.68,lng1:115.86,lat2:28.16,lng2:115.77,city:'丰城',hotel:['汉庭酒店(丰城店)','丰城市区','汉庭'],price:130},
-  {d:18,from:'丰城',to:'新干',km:80,note:'继续沿赣江，经樟树药都',phase:4,lat1:28.16,lng1:115.77,lat2:27.74,lng2:115.39,city:'新干',hotel:['汉庭酒店(新干店)','新干县城区','汉庭'],price:120},
-  {d:19,from:'新干',to:'吉安',km:75,note:'庐陵文化古城，白鹭洲',phase:4,lat1:27.74,lng1:115.39,lat2:27.11,lng2:114.99,city:'吉安',hotel:['全季酒店(吉安火车站店)','火车站附近','全季'],price:170},
-  {d:20,from:'吉安',to:'万安',km:80,note:'赣江上游，山水渐深',phase:4,lat1:27.11,lng1:114.99,lat2:26.46,lng2:114.79,city:'万安',hotel:['汉庭酒店(万安店)','万安县城区','汉庭'],price:120},
-  {d:21,from:'万安',to:'赣州',km:85,note:'客家首府！赣州古城墙、灶儿巷，吃牛肉汤',phase:4,lat1:26.46,lng1:114.79,lat2:25.83,lng2:114.94,city:'赣州',hotel:['亚朵·赣州南门口店','南门口商圈','亚朵'],price:220},
+  {d:17,from:'南昌',to:'丰城',km:80,note:'赣江西岸南下，平坦好骑',phase:4,lat1:28.68,lng1:115.86,lat2:28.16,lng2:115.77,city:'丰城'},
+  {d:18,from:'丰城',to:'新干',km:80,note:'继续沿赣江，经樟树药都',phase:4,lat1:28.16,lng1:115.77,lat2:27.74,lng2:115.39,city:'新干'},
+  {d:19,from:'新干',to:'吉安',km:75,note:'庐陵文化古城，白鹭洲',phase:4,lat1:27.74,lng1:115.39,lat2:27.11,lng2:114.99,city:'吉安'},
+  {d:20,from:'吉安',to:'万安',km:80,note:'赣江上游，山水渐深',phase:4,lat1:27.11,lng1:114.99,lat2:26.46,lng2:114.79,city:'万安'},
+  {d:21,from:'万安',to:'赣州',km:85,note:'客家首府！赣州古城墙、灶儿巷，吃牛肉汤',phase:4,lat1:26.46,lng1:114.79,lat2:25.83,lng2:114.94,city:'赣州'},
   // ── Phase 5: 翻越南岭 ──
-  {d:22,from:'赣州',to:'大余',km:85,note:'翻越南岭前最后补给，大余丫山风景区',phase:5,lat1:25.83,lng1:114.94,lat2:25.40,lng2:114.36,city:'大余',hotel:['汉庭酒店(大余店)','大余县城区','汉庭'],price:130},
-  {d:23,from:'大余',to:'南雄',km:50,note:'翻越梅关古道！全程最有挑战的一天，海拔400m垭口',phase:5,lat1:25.40,lng1:114.36,lat2:25.12,lng2:114.31,city:'南雄',hotel:['维也纳酒店(南雄店)','南雄市区','维也纳'],price:150},
-  {d:24,from:'南雄',to:'韶关',km:95,note:'下山进入广东！韶关丹霞地貌，铜勺饼',phase:5,lat1:25.12,lng1:114.31,lat2:24.81,lng2:113.59,city:'韶关',hotel:['亚朵·韶关东站店','韶关东站附近','亚朵'],price:220},
-  {d:25,from:'韶关',to:'英德',km:85,note:'英德红茶之乡，开始感受广东气候',phase:5,lat1:24.81,lng1:113.59,lat2:24.19,lng2:113.40,city:'英德',hotel:['全季酒店(英德店)','英德市区','全季'],price:170},
-  {d:26,from:'英德',to:'清远',km:75,note:'清远鸡，温泉之城',phase:5,lat1:24.19,lng1:113.40,lat2:23.68,lng2:113.06,city:'清远',hotel:['全季酒店(清远北江店)','北江沿岸','全季'],price:170},
-  {d:27,from:'清远',to:'广州',km:75,note:'抵达广州！早茶、上下九、珠江夜游',phase:5,lat1:23.68,lng1:113.06,lat2:23.13,lng2:113.26,city:'广州',hotel:['亚朵·淘金东山口地铁站店','农林下路37号 · 2026年新开','亚朵'],price:300},
+  {d:22,from:'赣州',to:'大余',km:85,note:'翻越南岭前最后补给，大余丫山风景区',phase:5,lat1:25.83,lng1:114.94,lat2:25.40,lng2:114.36,city:'大余'},
+  {d:23,from:'大余',to:'南雄',km:50,note:'翻越梅关古道！全程最有挑战的一天，海拔400m垭口',phase:5,lat1:25.40,lng1:114.36,lat2:25.12,lng2:114.31,city:'南雄'},
+  {d:24,from:'南雄',to:'韶关',km:95,note:'下山进入广东！韶关丹霞地貌，铜勺饼',phase:5,lat1:25.12,lng1:114.31,lat2:24.81,lng2:113.59,city:'韶关'},
+  {d:25,from:'韶关',to:'英德',km:85,note:'英德红茶之乡，开始感受广东气候',phase:5,lat1:24.81,lng1:113.59,lat2:24.19,lng2:113.40,city:'英德'},
+  {d:26,from:'英德',to:'清远',km:75,note:'清远鸡，温泉之城',phase:5,lat1:24.19,lng1:113.40,lat2:23.68,lng2:113.06,city:'清远'},
+  {d:27,from:'清远',to:'广州',km:75,note:'抵达广州！早茶、上下九、珠江夜游',phase:5,lat1:23.68,lng1:113.06,lat2:23.13,lng2:113.26,city:'广州'},
   // ── Phase 6: 粤西→雷州 ──
-  {d:28,from:'广州',to:'江门',km:90,note:'经佛山、顺德（顺德美食值得留半天）',phase:6,lat1:23.13,lng1:113.26,lat2:22.58,lng2:113.08,city:'江门',hotel:['全季酒店(江门万达广场店)','万达商圈','全季'],price:180},
-  {d:29,from:'江门',to:'恩平',km:80,note:'侨乡，碉楼文化',phase:6,lat1:22.58,lng1:113.08,lat2:22.18,lng2:112.31,city:'恩平',hotel:['汉庭酒店(恩平锦江店)','恩平市区','汉庭'],price:140},
-  {d:30,from:'恩平',to:'阳江',km:65,note:'海陵岛不远，可绕道看看',phase:6,lat1:22.18,lng1:112.31,lat2:21.86,lng2:111.98,city:'阳江',hotel:['全季酒店(阳江市政府店)','阳江市区','全季'],price:170},
-  {d:31,from:'阳江',to:'阳西',km:50,note:'短途轻骑，休整半天',phase:6,lat1:21.86,lng1:111.98,lat2:21.75,lng2:111.62,city:'阳西',hotel:['汉庭酒店(阳西店)','阳西县城区','汉庭'],price:120},
-  {d:32,from:'阳西',to:'茂名',km:75,note:'粤西进入热带气候区',phase:6,lat1:21.75,lng1:111.62,lat2:21.66,lng2:110.92,city:'茂名',hotel:['全季酒店(茂名茂南店)','茂南区','全季'],price:160},
-  {d:33,from:'茂名',to:'湛江',km:90,note:'湛江生蚝，雷州半岛入口',phase:6,lat1:21.66,lng1:110.92,lat2:21.27,lng2:110.36,city:'湛江',hotel:['全季酒店(湛江海滨大道店)','海滨大道','全季'],price:180},
-  {d:34,from:'湛江',to:'雷州',km:60,note:'雷州古城，天南重地',phase:6,lat1:21.27,lng1:110.36,lat2:20.91,lng2:110.10,city:'雷州',hotel:['汉庭酒店(雷州店)','雷州市区','汉庭'],price:120},
-  {d:35,from:'雷州',to:'徐闻',km:60,note:'大陆最南端！中国大陆的尽头',phase:6,lat1:20.91,lng1:110.10,lat2:20.33,lng2:110.18,city:'徐闻',hotel:['汉庭酒店(徐闻店)','徐闻县城区','汉庭'],price:120},
+  {d:28,from:'广州',to:'江门',km:90,note:'经佛山、顺德（顺德美食值得留半天）',phase:6,lat1:23.13,lng1:113.26,lat2:22.58,lng2:113.08,city:'江门'},
+  {d:29,from:'江门',to:'恩平',km:80,note:'侨乡，碉楼文化',phase:6,lat1:22.58,lng1:113.08,lat2:22.18,lng2:112.31,city:'恩平'},
+  {d:30,from:'恩平',to:'阳江',km:65,note:'海陵岛不远，可绕道看看',phase:6,lat1:22.18,lng1:112.31,lat2:21.86,lng2:111.98,city:'阳江'},
+  {d:31,from:'阳江',to:'阳西',km:50,note:'短途轻骑，休整半天',phase:6,lat1:21.86,lng1:111.98,lat2:21.75,lng2:111.62,city:'阳西'},
+  {d:32,from:'阳西',to:'茂名',km:75,note:'粤西进入热带气候区',phase:6,lat1:21.75,lng1:111.62,lat2:21.66,lng2:110.92,city:'茂名'},
+  {d:33,from:'茂名',to:'湛江',km:90,note:'湛江生蚝，雷州半岛入口',phase:6,lat1:21.66,lng1:110.92,lat2:21.27,lng2:110.36,city:'湛江'},
+  {d:34,from:'湛江',to:'雷州',km:60,note:'雷州古城，天南重地',phase:6,lat1:21.27,lng1:110.36,lat2:20.91,lng2:110.10,city:'雷州'},
+  {d:35,from:'雷州',to:'徐闻',km:60,note:'大陆最南端！中国大陆的尽头',phase:6,lat1:20.91,lng1:110.10,lat2:20.33,lng2:110.18,city:'徐闻'},
   // ── Phase 7: 海南西线环岛 ──
-  {d:36,from:'徐闻',to:'海口',km:0,note:'轮渡约1.5h，自行车可上船。踏上海南岛！',phase:7,ferry:true,lat1:20.33,lng1:110.18,lat2:20.04,lng2:110.35,city:'海口',hotel:['亚朵·省政府国兴大道店','大英山西三路1号 · 2025年新开','亚朵'],price:250},
-  {d:37,from:'海口',to:'',km:0,note:'骑楼老街、海大南门夜市、补给休整',phase:7,rest:true,lat1:20.04,lng1:110.35,city:'海口',price:250},
-  {d:38,from:'海口',to:'临高',km:85,note:'西线出发！经澄迈，椰风海韵',phase:7,lat1:20.04,lng1:110.35,lat2:19.91,lng2:109.69,city:'临高',hotel:['维也纳酒店(临高店)','临高县城区','维也纳'],price:150},
-  {d:39,from:'临高',to:'儋州',km:65,note:'千年古盐田，中国最早的日晒制盐点',phase:7,lat1:19.91,lng1:109.69,lat2:19.52,lng2:109.58,city:'儋州',hotel:['全季酒店(儋州那大店)','那大镇中心','全季'],price:160},
-  {d:40,from:'儋州',to:'昌江',km:80,note:'棋子湾日落，原始野性的西海岸',phase:7,lat1:19.52,lng1:109.58,lat2:19.30,lng2:109.06,city:'昌江',hotel:['昌江棋子湾开元度假酒店','棋子湾旅游度假区','本地'],price:180},
-  {d:41,from:'昌江',to:'东方',km:80,note:'鱼鳞洲风车阵，海边风电景观',phase:7,lat1:19.30,lng1:109.06,lat2:19.10,lng2:108.65,city:'东方',hotel:['全季酒店(东方店)','东方市区','全季'],price:150},
-  {d:42,from:'东方',to:'乐东',km:75,note:'尖峰岭热带雨林，南国风光',phase:7,lat1:19.10,lng1:108.65,lat2:18.75,lng2:109.17,city:'乐东',hotel:['维也纳酒店(乐东店)','乐东县城区','维也纳'],price:140},
-  {d:43,from:'乐东',to:'三亚',km:85,note:'终点！3100公里旅途完成，从此开始三亚生活 🏁',phase:7,lat1:18.75,lng1:109.17,lat2:18.25,lng2:109.50,city:'三亚',hotel:['亚朵·三亚湾凤凰路店','凤凰路374号','亚朵'],price:280},
+  {d:36,from:'徐闻',to:'海口',km:0,note:'轮渡约1.5h，自行车可上船。踏上海南岛！',phase:7,ferry:true,lat1:20.33,lng1:110.18,lat2:20.04,lng2:110.35,city:'海口'},
+  {d:37,from:'海口',to:'',km:0,note:'骑楼老街、海大南门夜市、补给休整',phase:7,rest:true,lat1:20.04,lng1:110.35,city:'海口'},
+  {d:38,from:'海口',to:'临高',km:85,note:'西线出发！经澄迈，椰风海韵',phase:7,lat1:20.04,lng1:110.35,lat2:19.91,lng2:109.69,city:'临高'},
+  {d:39,from:'临高',to:'儋州',km:65,note:'千年古盐田，中国最早的日晒制盐点',phase:7,lat1:19.91,lng1:109.69,lat2:19.52,lng2:109.58,city:'儋州'},
+  {d:40,from:'儋州',to:'昌江',km:80,note:'棋子湾日落，原始野性的西海岸',phase:7,lat1:19.52,lng1:109.58,lat2:19.30,lng2:109.06,city:'昌江'},
+  {d:41,from:'昌江',to:'东方',km:80,note:'鱼鳞洲风车阵，海边风电景观',phase:7,lat1:19.30,lng1:109.06,lat2:19.10,lng2:108.65,city:'东方'},
+  {d:42,from:'东方',to:'乐东',km:75,note:'尖峰岭热带雨林，南国风光',phase:7,lat1:19.10,lng1:108.65,lat2:18.75,lng2:109.17,city:'乐东'},
+  {d:43,from:'乐东',to:'三亚',km:85,note:'终点！3100公里旅途完成，从此开始三亚生活 🏁',phase:7,lat1:18.75,lng1:109.17,lat2:18.25,lng2:109.50,city:'三亚'},
 ];
 
 // ── Route Cache ──
@@ -377,10 +377,14 @@ phases.forEach(p=>{
         <a class="card-hotel" style="color:${bc};background:${bbg}" href="https://www.amap.com/search?query=${encodeURIComponent(h[0])}&city=${encodeURIComponent(searchCity)}" target="_blank">
           ${ICON}<span class="h-name">${h[0]}</span><span class="h-addr">${h[1]}</span>
         </a>
-        <span class="card-price">¥${day.price}/晚</span>
+        ${day.price?`<span class="card-price">¥${day.price}/晚</span>`:''}
       </div>`;
-    } else if(day.rest && day.price){
-      hotelHtml=`<div style="display:flex;align-items:center;gap:.4rem"><span class="card-price">续住 ¥${day.price}/晚</span></div>`;
+    } else if(!day.rest && !day.ferry && searchCity){
+      hotelHtml=`<a class="card-hotel" style="color:var(--dim);background:var(--bg)" href="https://m.ctrip.com/webapp/hotel/hotellist/${encodeURIComponent(searchCity)}/hotel" target="_blank">
+        ${ICON}<span class="h-name">在携程搜索 ${searchCity} 酒店</span>
+      </a>`;
+    } else if(day.rest){
+      hotelHtml=`<div style="display:flex;align-items:center;gap:.4rem"><span style="font-size:.78rem;color:var(--dim)">续住前一晚酒店</span></div>`;
     }
     const fuel=getFuel(cachedDist?routeCache[ck].distance:day.km);
     let fuelHtml='';
@@ -493,7 +497,7 @@ function initAMap(){
     overviewLines.push(line);
   });
   const majorStops=[
-    {n:'淄博',lt:36.81,ln:118.05},{n:'沂水',lt:35.79,ln:118.63},
+    {n:'黄金国际',lt:36.806,ln:118.038},{n:'沂水',lt:35.79,ln:118.63},
     {n:'临沂',lt:35.10,ln:118.35},{n:'徐州',lt:34.26,ln:117.19},
     {n:'固镇',lt:33.32,ln:117.32},{n:'蚌埠',lt:32.92,ln:117.39},
     {n:'定远',lt:32.51,ln:117.68},{n:'合肥',lt:31.82,ln:117.23},
@@ -506,7 +510,7 @@ function initAMap(){
     {n:'三亚',lt:18.25,ln:109.50},
   ];
   majorStops.forEach(s=>{
-    const isEnd=s.n==='淄博'||s.n==='三亚';
+    const isEnd=s.n==='黄金国际'||s.n==='三亚';
     const m=new AMap.CircleMarker({center:[s.ln,s.lt],radius:isEnd?8:5,fillColor:isEnd?'#ef4444':'#8b5c2a',strokeColor:'#fff',strokeWeight:2,fillOpacity:1});
     m.setLabel({content:'<span style="font-size:'+(isEnd?'13':'11')+'px;font-weight:'+(isEnd?'700':'500')+'">'+s.n+'</span>',direction:'top',offset:new AMap.Pixel(0,-5)});
     map.add(m);
