@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>淄博→三亚骑行计划（内陆线）</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="骑行计划">
+<meta name="theme-color" content="#3a2a1a">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='30' fill='%233a2a1a'/><text x='90' y='115' text-anchor='middle' font-size='90'>🚴</text></svg>">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
+<script>window._AMapSecurityConfig={securityJsCode:'3cfc68f06076ab3d69c6b88162709fda'}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f6f8;--card:#fff;--fg:#1a1d23;--dim:#6b7280;
+  --accent:#8b5c2a;--accent-light:#fdf5eb;
+  --rest:#c4853a;--rest-light:#fdf5eb;--border:#e5e7eb;
+  --hotel:#6366f1;--hotel-light:#eef2ff;
+  --price:#059669;--price-light:#ecfdf5;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#0f1115;--card:#1a1d24;--fg:#e5e7eb;--dim:#9ca3af;
+  --accent:#d4a056;--accent-light:#2a2218;
+  --rest:#daa55a;--rest-light:#2a2218;--border:#2d3139;
+  --hotel:#818cf8;--hotel-light:#1e1b3a;
+  --price:#34d399;--price-light:#0d2818;
+}}
+body{font-family:'Noto Sans SC',system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
+.header{background:linear-gradient(135deg,#3a2a1a,#8b5c2a);color:#fff;padding:2.5rem 1.5rem 1.5rem}
+.header-inner{max-width:1200px;margin:0 auto}
+.header h1{font-size:2rem;font-weight:900;margin-bottom:.3rem}
+.header h1 span{color:#f0c878}
+.header .tag{display:inline-block;background:rgba(255,255,255,.15);padding:.2rem .7rem;border-radius:12px;font-size:.75rem;margin-bottom:.5rem;letter-spacing:.05em}
+.header p{opacity:.85;font-size:.95rem}
+.stats-bar{display:flex;gap:1.5rem;margin-top:1.25rem;flex-wrap:wrap}
+.stat-item{display:flex;align-items:baseline;gap:.4rem}
+.stat-item .val{font-size:1.5rem;font-weight:900;color:#f0c878}
+.stat-item .label{font-size:.8rem;opacity:.7}
+#map{width:100%;height:420px;z-index:1}
+.phase-nav{max-width:1200px;margin:0 auto;padding:1rem 1.5rem;display:flex;gap:.5rem;flex-wrap:wrap}
+.phase-btn{padding:.4rem .85rem;border-radius:20px;border:2px solid var(--border);background:var(--card);color:var(--fg);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.phase-btn:hover{border-color:var(--accent)}
+.phase-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.cards-container{max-width:1200px;margin:0 auto;padding:0 1.5rem 2rem}
+.phase-section{margin-bottom:2rem}
+.phase-title{font-size:1.1rem;font-weight:700;margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent);display:flex;align-items:center;gap:.75rem}
+.phase-title .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.phase-title .meta{font-weight:400;font-size:.85rem;color:var(--dim);margin-left:auto}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:.75rem}
+.day-card{background:var(--card);border-radius:10px;padding:1rem 1.15rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
+.day-card:hover{border-color:var(--accent);box-shadow:0 2px 12px rgba(0,0,0,.08);transform:translateY(-1px)}
+.day-card.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-light)}
+.day-card.rest{background:var(--rest-light);border-left:4px solid var(--rest)}
+.card-top{display:flex;align-items:center;gap:.75rem;margin-bottom:.4rem}
+.day-badge{font-size:.7rem;font-weight:700;padding:.15rem .5rem;border-radius:4px;background:var(--accent-light);color:var(--accent);letter-spacing:.03em}
+.day-card.rest .day-badge{background:var(--rest-light);color:var(--rest)}
+.day-dist{font-size:.85rem;font-weight:700;color:var(--accent);margin-left:auto;font-variant-numeric:tabular-nums}
+.day-card.rest .day-dist{color:var(--rest)}
+.card-route{font-weight:700;font-size:.95rem;margin-bottom:.25rem}
+.card-note{font-size:.82rem;color:var(--dim);line-height:1.5;margin-bottom:.45rem}
+.card-hotel{display:flex;align-items:center;gap:.4rem;font-size:.78rem;padding:.35rem .6rem;background:var(--hotel-light);border-radius:6px;color:var(--hotel);text-decoration:none;transition:opacity .2s}
+.card-hotel:hover{opacity:.8}
+.card-hotel .h-name{font-weight:600}
+.card-hotel .h-addr{color:var(--dim);font-size:.72rem;margin-left:.3rem}
+.card-price{display:inline-block;font-size:.75rem;font-weight:700;color:var(--price);background:var(--price-light);padding:.15rem .45rem;border-radius:4px;margin-left:auto;flex-shrink:0}
+.card-fuel{display:flex;gap:.5rem;flex-wrap:wrap;font-size:.72rem;color:var(--dim);margin-bottom:.4rem}
+.fuel-tag{padding:.15rem .4rem;border-radius:4px;background:var(--bg);border:1px solid var(--border);white-space:nowrap}
+.budget{max-width:1200px;margin:0 auto;padding:0 1.5rem 2rem}
+.budget h2{font-size:1.3rem;font-weight:900;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+.budget-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.75rem;margin-bottom:1.5rem}
+.budget-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.15rem;display:flex;justify-content:space-between;align-items:center}
+.budget-item .b-label{font-size:.9rem;font-weight:500}
+.budget-item .b-detail{font-size:.75rem;color:var(--dim);margin-top:.15rem}
+.budget-item .b-price{font-size:1.1rem;font-weight:900;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.budget-total{background:linear-gradient(135deg,#3a2a1a,#8b5c2a);color:#fff;border-radius:10px;padding:1.25rem 1.5rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.budget-total .bt-label{font-size:1rem;font-weight:700}
+.budget-total .bt-price{font-size:1.5rem;font-weight:900;color:#f0c878}
+.budget-note{font-size:.82rem;color:var(--dim);line-height:1.6}
+.route-info{display:none;max-width:1200px;margin:0 auto;padding:.75rem 1.5rem;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--card);border-bottom:1px solid var(--border)}
+.ri-day{font-size:.75rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;background:var(--accent);color:#fff}
+.ri-route{font-weight:700;font-size:.95rem}
+.ri-dist{font-size:1.1rem;font-weight:900;color:var(--accent);font-variant-numeric:tabular-nums}
+.ri-time{font-size:.85rem;color:var(--dim)}
+.ri-nav{margin-left:auto;padding:.4rem .85rem;border-radius:20px;background:var(--accent);color:#fff;text-decoration:none;font-size:.8rem;font-weight:600;white-space:nowrap;transition:opacity .2s}
+.ri-nav:hover{opacity:.85}
+.dist-progress{max-width:1200px;margin:0 auto;padding:.5rem 1.5rem}
+.dist-progress-text{font-size:.8rem;color:var(--dim);margin-bottom:.3rem}
+.dist-progress .cl-bar{margin-top:0}
+.compare{max-width:1200px;margin:0 auto;padding:0 1.5rem 2rem}
+.compare-box{background:var(--accent-light);border-radius:10px;padding:1.25rem 1.5rem;margin-bottom:1rem}
+.compare-box h3{font-size:.9rem;color:var(--accent);margin-bottom:.4rem}
+.compare-box p{font-size:.88rem;color:var(--dim);line-height:1.6}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.75rem;max-width:1200px;margin:0 auto;padding:0 1.5rem 3rem}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1.15rem}
+.tip-card h3{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:.4rem}
+.tip-card p{font-size:.85rem;color:var(--dim);line-height:1.55}
+.checklist{max-width:1200px;margin:0 auto;padding:0 1.5rem 1.5rem}
+.checklist h2{font-size:1.3rem;font-weight:900;margin-bottom:.5rem;padding-bottom:.5rem;border-bottom:3px solid var(--accent)}
+.cl-progress{font-size:.85rem;color:var(--dim);margin-bottom:1rem}
+.cl-progress .done{color:var(--price);font-weight:700}
+.cl-bar{height:6px;background:var(--border);border-radius:3px;margin-top:.4rem;overflow:hidden}
+.cl-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--price));border-radius:3px;transition:width .3s}
+.cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:.75rem}
+.cl-cat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.15rem}
+.cl-cat h3{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);margin-bottom:.6rem}
+.cl-item{display:flex;align-items:flex-start;gap:.5rem;padding:.35rem 0;border-bottom:1px solid var(--border);font-size:.84rem;color:var(--fg);cursor:pointer;user-select:none;transition:opacity .2s}
+.cl-item:last-child{border-bottom:none}
+.cl-item input{margin-top:.25rem;accent-color:var(--accent);flex-shrink:0;width:16px;height:16px;cursor:pointer}
+.cl-item.checked{opacity:.55;text-decoration:line-through;text-decoration-color:var(--dim)}
+.cl-item .bought-tag{font-size:.65rem;font-weight:700;color:#fff;background:var(--price);padding:.1rem .35rem;border-radius:3px;margin-left:.3rem;text-decoration:none;display:inline-block}
+.pwa-banner{display:none;position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#3a2a1a,#8b5c2a);color:#fff;padding:1rem 1.25rem;z-index:999;box-shadow:0 -2px 16px rgba(0,0,0,.3);align-items:center;gap:.75rem;font-size:.85rem;padding-bottom:calc(1rem + env(safe-area-inset-bottom,0px))}
+.pwa-banner.show{display:flex}
+.pwa-banner .pwa-text{flex:1;line-height:1.4}
+.pwa-banner .pwa-text strong{display:block;font-size:.9rem;margin-bottom:.15rem}
+.pwa-banner .pwa-btn{padding:.5rem 1rem;border-radius:20px;border:none;background:#f0c878;color:#3a2a1a;font-weight:700;font-size:.8rem;cursor:pointer;white-space:nowrap;font-family:inherit}
+.pwa-banner .pwa-close{background:none;border:none;color:rgba(255,255,255,.6);font-size:1.2rem;cursor:pointer;padding:.25rem;line-height:1}
+.nav-btn-float{display:none;position:fixed;bottom:1.5rem;right:1rem;width:52px;height:52px;border-radius:50%;background:var(--accent);color:#fff;border:none;box-shadow:0 3px 12px rgba(0,0,0,.25);z-index:99;cursor:pointer;font-size:1.3rem;align-items:center;justify-content:center}
+@media(max-width:600px){
+  .header h1{font-size:1.5rem}
+  .stats-bar{gap:1rem}
+  .stat-item .val{font-size:1.2rem}
+  #map{height:260px}
+  .cards-grid{grid-template-columns:1fr}
+  .tips-grid{grid-template-columns:1fr}
+  .budget-grid{grid-template-columns:1fr}
+  .cl-grid{grid-template-columns:1fr}
+  .phase-nav{padding:.75rem 1rem;gap:.4rem}
+  .phase-btn{font-size:.72rem;padding:.35rem .65rem}
+  .route-info{padding:.6rem 1rem;gap:.6rem;font-size:.85rem}
+  .ri-nav{padding:.35rem .7rem;font-size:.75rem}
+  .nav-btn-float{display:flex}
+  .day-card{padding:.85rem 1rem}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-inner">
+    <div class="tag">内陆直线版</div>
+    <h1>淄博 → <span>三亚</span></h1>
+    <p>走京九走廊直线南下，穿越山东、安徽、江西、广东、海南五省</p>
+    <div class="stats-bar">
+      <div class="stat-item"><span class="val">~3,100</span><span class="label">公里</span></div>
+      <div class="stat-item"><span class="val">41</span><span class="label">骑行天</span></div>
+      <div class="stat-item"><span class="val">1</span><span class="label">休息天</span></div>
+      <div class="stat-item"><span class="val">43</span><span class="label">总天数</span></div>
+      <div class="stat-item"><span class="val">~2.2w</span><span class="label">总预算</span></div>
+    </div>
+  </div>
+</div>
+<div id="map"></div>
+<div class="route-info" id="routeInfo">
+  <span class="ri-day"></span>
+  <span class="ri-route"></span>
+  <span class="ri-dist"></span>
+  <span class="ri-time"></span>
+  <a class="ri-nav" href="#" target="_blank">在高德地图中打开 →</a>
+</div>
+<div class="dist-progress" id="distProgress">
+  <div class="dist-progress-text">正在获取高德骑行精确距离... <span id="distCount">0/0</span></div>
+  <div class="cl-bar"><div class="cl-bar-fill" id="distBar" style="width:0%"></div></div>
+</div>
+<div class="phase-nav" id="phaseNav"></div>
+<div class="cards-container" id="cardsContainer"></div>
+
+<div class="budget">
+  <h2>全程预算估算</h2>
+  <div class="budget-grid">
+    <div class="budget-item">
+      <div><div class="b-label">住宿</div><div class="b-detail">42晚 × 均价约180元</div></div>
+      <div class="b-price">¥7,560</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">餐饮</div><div class="b-detail">43天 × 约50元/天 · 轻食为主</div></div>
+      <div class="b-price">¥2,150</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">自行车</div><div class="b-detail">入门旅行车/平把公路车</div></div>
+      <div class="b-price">¥3,000</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">骑行装备</div><div class="b-detail">头盔、骑行服、驮包、车灯等</div></div>
+      <div class="b-price">¥2,000</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">渡轮</div><div class="b-detail">徐闻→海口 人+自行车</div></div>
+      <div class="b-price">¥100</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">运动相机 ×2</div><div class="b-detail">GoPro/大疆 Action + 电池 + 存储卡</div></div>
+      <div class="b-price">¥4,000</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">修车维护</div><div class="b-detail">补胎、换链条、调校等</div></div>
+      <div class="b-price">¥500</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">景点门票</div><div class="b-detail">台儿庄、滕王阁等</div></div>
+      <div class="b-price">¥500</div>
+    </div>
+    <div class="budget-item">
+      <div><div class="b-label">杂费+应急</div><div class="b-detail">水、零食、防晒、就医等</div></div>
+      <div class="b-price">¥2,000</div>
+    </div>
+  </div>
+  <div class="budget-total">
+    <div class="bt-label">预估总计</div>
+    <div class="bt-price">¥21,810</div>
+  </div>
+  <p class="budget-note">
+    * 内陆线城市住宿普遍比沿海便宜，均价约180元/晚。<br>
+    * 比沿海线少走约1300km、少住约20晚，住宿+餐饮合计节省约6000元。<br>
+    * 如已有运动相机可再省4000元。
+  </p>
+</div>
+
+<div class="compare">
+  <div class="compare-box">
+    <h3>内陆线 vs 沿海线对比</h3>
+    <p>
+      <strong>内陆线</strong>：~3,100km / 43天 / ~2.2万元 — 经枣庄、徐州、合肥、南昌、赣州、韶关、广州<br>
+      <strong>沿海线</strong>：~4,400km / 64天 / ~3.0万元 — 经扬州、苏州、杭州、横店、厦门、泉州、汕头<br><br>
+      内陆线省时间省钱，路过想去的枣庄、徐州、南昌；沿海线风景更好、城市更多样。两条线在广州汇合后路线相同。
+    </p>
+  </div>
+</div>
+
+<div class="checklist">
+  <h2>装备清单</h2>
+  <div class="cl-progress"><span class="done" id="clDone">0</span> / <span id="clTotal">0</span> 已购 · 点击打勾<div class="cl-bar"><div class="cl-bar-fill" id="clBar" style="width:0%"></div></div></div>
+  <div class="cl-grid" id="clGrid"></div>
+</div>
+
+<div class="tips-grid">
+  <div class="tip-card"><h3>地形提醒</h3><p>内陆线最大挑战是赣州→韶关翻越南岭（梅关古道），海拔约400m，连续爬坡。其余路段以平原丘陵为主。</p></div>
+  <div class="tip-card"><h3>补给间距</h3><p>内陆小城之间距离较远，部分路段（万安→赣州、大余→南雄）沿途补给点较少，每天出发前备足水和零食。</p></div>
+  <div class="tip-card"><h3>天气</h3><p>内陆冬季比沿海更冷。安徽段12月可达0°C以下，江西段5-10°C，过韶关后回暖。注意保暖。</p></div>
+</div>
+
+<script>
+const ICON='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>';
+
+const phases=[
+  {id:1,name:'壹 · 山东出省',meta:'~415km · 5天连骑',color:'#3b82f6'},
+  {id:2,name:'贰 · 皖北平原',meta:'~480km · 7天连骑',color:'#10b981'},
+  {id:3,name:'叁 · 横渡长江入赣',meta:'~300km · 4天连骑',color:'#8b5cf6'},
+  {id:4,name:'肆 · 赣中南下',meta:'~400km · 5天连骑',color:'#f59e0b'},
+  {id:5,name:'伍 · 翻越南岭',meta:'~465km · 6天连骑',color:'#ef4444'},
+  {id:6,name:'陆 · 粤西→雷州',meta:'~570km · 8天连骑',color:'#06b6d4'},
+  {id:7,name:'柒 · 海南西线环岛',meta:'~470km · 6骑+1休+渡轮',color:'#f97316'},
+];
+
+const days=[
+  // ── Phase 1: 山东 ──
+  {d:1,from:'淄博',to:'沂源',km:90,note:'进入沂蒙山区，有爬升，初日不宜太快（高德实测约88.5km）',phase:1,lat1:36.81,lng1:118.05,lat2:36.18,lng2:118.17,city:'沂源',hotel:['全季酒店(沂源店)','沂源县城区','全季'],price:150},
+  {d:2,from:'沂源',to:'沂水',km:65,note:'沂蒙山区骑行，经鲁山，路况多起伏',phase:1,lat1:36.18,lng1:118.17,lat2:35.79,lng2:118.63,city:'沂水',hotel:['汉庭酒店(沂水店)','沂水县城区','汉庭'],price:130},
+  {d:3,from:'沂水',to:'临沂',km:90,note:'下山为主，沿G206南下，路况好转',phase:1,lat1:35.79,lng1:118.63,lat2:35.10,lng2:118.35,city:'临沂',hotel:['亚朵·泰盛广场万象汇店','通达路89号 · 2025年新开','亚朵'],price:250},
+  {d:4,from:'临沂',to:'台儿庄',km:95,note:'台儿庄古城，抗战名城，夜景很美',phase:1,lat1:35.10,lng1:118.35,lat2:34.56,lng2:117.73,city:'枣庄',hotel:['全季酒店(台儿庄古城店)','台儿庄古城附近','全季'],price:180},
+  {d:5,from:'台儿庄',to:'徐州',km:75,note:'进入江苏，云龙湖、户部山，两汉文化重镇',phase:1,lat1:34.56,lng1:117.73,lat2:34.26,lng2:117.19,city:'徐州',hotel:['亚朵·苏宁广场店','中山北路','亚朵'],price:240},
+  // ── Phase 2: 皖北平原 ──
+  {d:6,from:'徐州',to:'宿州',km:85,note:'跨省入皖，平原骑行，一马平川',phase:2,lat1:34.26,lng1:117.19,lat2:33.64,lng2:116.98,city:'宿州',hotel:['全季酒店(宿州万达广场店)','万达商圈','全季'],price:170},
+  {d:7,from:'宿州',to:'固镇',km:55,note:'皖北平原南下，沿G206',phase:2,lat1:33.64,lng1:116.98,lat2:33.32,lng2:117.32,city:'固镇',hotel:['汉庭酒店(固镇店)','固镇县城区','汉庭'],price:120},
+  {d:8,from:'固镇',to:'蚌埠',km:50,note:'淮河之城，蚌埠南山文化古迹',phase:2,lat1:33.32,lng1:117.32,lat2:32.92,lng2:117.39,city:'蚌埠',hotel:['全季酒店(蚌埠万达广场店)','万达商圈','全季'],price:170},
+  {d:9,from:'蚌埠',to:'定远',km:70,note:'沿G3方向南下，皖中腹地',phase:2,lat1:32.92,lng1:117.39,lat2:32.51,lng2:117.68,city:'定远',hotel:['汉庭酒店(定远店)','定远县城区','汉庭'],price:120},
+  {d:10,from:'定远',to:'合肥',km:65,note:'安徽省会，包公祠、逍遥津',phase:2,lat1:32.51,lng1:117.68,lat2:31.82,lng2:117.23,city:'合肥',hotel:['亚朵·天鹅湖万达广场店','天鹅湖商圈','亚朵'],price:260},
+  {d:11,from:'合肥',to:'桐城',km:95,note:'桐城文派发源地，六尺巷值得看',phase:2,lat1:31.82,lng1:117.23,lat2:31.05,lng2:116.97,city:'桐城',hotel:['汉庭酒店(桐城店)','桐城市区','汉庭'],price:140},
+  {d:12,from:'桐城',to:'安庆',km:60,note:'轻松到达，安庆是黄梅戏之乡',phase:2,lat1:31.05,lng1:116.97,lat2:30.53,lng2:117.06,city:'安庆',hotel:['全季酒店(安庆人民路步行街店)','人民路步行街','全季'],price:180},
+  // ── Phase 3: 横渡长江入赣 ──
+  {d:13,from:'安庆',to:'望江',km:75,note:'沿长江南岸骑行，江景壮阔',phase:3,lat1:30.53,lng1:117.06,lat2:30.13,lng2:116.55,city:'望江',hotel:['汉庭酒店(望江店)','望江县城区','汉庭'],price:120},
+  {d:14,from:'望江',to:'九江',km:85,note:'经宿松、彭泽，到达庐山脚下',phase:3,lat1:30.13,lng1:116.55,lat2:29.71,lng2:115.97,city:'九江',hotel:['亚朵·九江火车站店','火车站商圈','亚朵'],price:220},
+  {d:15,from:'九江',to:'共青城',km:70,note:'鄱阳湖畔骑行，湖光山色',phase:3,lat1:29.71,lng1:115.97,lat2:29.25,lng2:115.81,city:'共青城',hotel:['汉庭酒店(共青城店)','共青城市区','汉庭'],price:130},
+  {d:16,from:'共青城',to:'南昌',km:70,note:'滕王阁、八一广场、南昌拌粉瓦罐汤',phase:3,lat1:29.25,lng1:115.81,lat2:28.68,lng2:115.86,city:'南昌',hotel:['亚朵·八一广场地铁站店','八一广场附近','亚朵'],price:240},
+  // ── Phase 4: 赣中南下 ──
+  {d:17,from:'南昌',to:'丰城',km:80,note:'赣江西岸南下，平坦好骑',phase:4,lat1:28.68,lng1:115.86,lat2:28.16,lng2:115.77,city:'丰城',hotel:['汉庭酒店(丰城店)','丰城市区','汉庭'],price:130},
+  {d:18,from:'丰城',to:'新干',km:80,note:'继续沿赣江，经樟树药都',phase:4,lat1:28.16,lng1:115.77,lat2:27.74,lng2:115.39,city:'新干',hotel:['汉庭酒店(新干店)','新干县城区','汉庭'],price:120},
+  {d:19,from:'新干',to:'吉安',km:75,note:'庐陵文化古城，白鹭洲',phase:4,lat1:27.74,lng1:115.39,lat2:27.11,lng2:114.99,city:'吉安',hotel:['全季酒店(吉安火车站店)','火车站附近','全季'],price:170},
+  {d:20,from:'吉安',to:'万安',km:80,note:'赣江上游，山水渐深',phase:4,lat1:27.11,lng1:114.99,lat2:26.46,lng2:114.79,city:'万安',hotel:['汉庭酒店(万安店)','万安县城区','汉庭'],price:120},
+  {d:21,from:'万安',to:'赣州',km:85,note:'客家首府！赣州古城墙、灶儿巷，吃牛肉汤',phase:4,lat1:26.46,lng1:114.79,lat2:25.83,lng2:114.94,city:'赣州',hotel:['亚朵·赣州南门口店','南门口商圈','亚朵'],price:220},
+  // ── Phase 5: 翻越南岭 ──
+  {d:22,from:'赣州',to:'大余',km:85,note:'翻越南岭前最后补给，大余丫山风景区',phase:5,lat1:25.83,lng1:114.94,lat2:25.40,lng2:114.36,city:'大余',hotel:['汉庭酒店(大余店)','大余县城区','汉庭'],price:130},
+  {d:23,from:'大余',to:'南雄',km:50,note:'翻越梅关古道！全程最有挑战的一天，海拔400m垭口',phase:5,lat1:25.40,lng1:114.36,lat2:25.12,lng2:114.31,city:'南雄',hotel:['维也纳酒店(南雄店)','南雄市区','维也纳'],price:150},
+  {d:24,from:'南雄',to:'韶关',km:95,note:'下山进入广东！韶关丹霞地貌，铜勺饼',phase:5,lat1:25.12,lng1:114.31,lat2:24.81,lng2:113.59,city:'韶关',hotel:['亚朵·韶关东站店','韶关东站附近','亚朵'],price:220},
+  {d:25,from:'韶关',to:'英德',km:85,note:'英德红茶之乡，开始感受广东气候',phase:5,lat1:24.81,lng1:113.59,lat2:24.19,lng2:113.40,city:'英德',hotel:['全季酒店(英德店)','英德市区','全季'],price:170},
+  {d:26,from:'英德',to:'清远',km:75,note:'清远鸡，温泉之城',phase:5,lat1:24.19,lng1:113.40,lat2:23.68,lng2:113.06,city:'清远',hotel:['全季酒店(清远北江店)','北江沿岸','全季'],price:170},
+  {d:27,from:'清远',to:'广州',km:75,note:'抵达广州！早茶、上下九、珠江夜游',phase:5,lat1:23.68,lng1:113.06,lat2:23.13,lng2:113.26,city:'广州',hotel:['亚朵·淘金东山口地铁站店','农林下路37号 · 2026年新开','亚朵'],price:300},
+  // ── Phase 6: 粤西→雷州 ──
+  {d:28,from:'广州',to:'江门',km:90,note:'经佛山、顺德（顺德美食值得留半天）',phase:6,lat1:23.13,lng1:113.26,lat2:22.58,lng2:113.08,city:'江门',hotel:['全季酒店(江门万达广场店)','万达商圈','全季'],price:180},
+  {d:29,from:'江门',to:'恩平',km:80,note:'侨乡，碉楼文化',phase:6,lat1:22.58,lng1:113.08,lat2:22.18,lng2:112.31,city:'恩平',hotel:['汉庭酒店(恩平锦江店)','恩平市区','汉庭'],price:140},
+  {d:30,from:'恩平',to:'阳江',km:65,note:'海陵岛不远，可绕道看看',phase:6,lat1:22.18,lng1:112.31,lat2:21.86,lng2:111.98,city:'阳江',hotel:['全季酒店(阳江市政府店)','阳江市区','全季'],price:170},
+  {d:31,from:'阳江',to:'阳西',km:50,note:'短途轻骑，休整半天',phase:6,lat1:21.86,lng1:111.98,lat2:21.75,lng2:111.62,city:'阳西',hotel:['汉庭酒店(阳西店)','阳西县城区','汉庭'],price:120},
+  {d:32,from:'阳西',to:'茂名',km:75,note:'粤西进入热带气候区',phase:6,lat1:21.75,lng1:111.62,lat2:21.66,lng2:110.92,city:'茂名',hotel:['全季酒店(茂名茂南店)','茂南区','全季'],price:160},
+  {d:33,from:'茂名',to:'湛江',km:90,note:'湛江生蚝，雷州半岛入口',phase:6,lat1:21.66,lng1:110.92,lat2:21.27,lng2:110.36,city:'湛江',hotel:['全季酒店(湛江海滨大道店)','海滨大道','全季'],price:180},
+  {d:34,from:'湛江',to:'雷州',km:60,note:'雷州古城，天南重地',phase:6,lat1:21.27,lng1:110.36,lat2:20.91,lng2:110.10,city:'雷州',hotel:['汉庭酒店(雷州店)','雷州市区','汉庭'],price:120},
+  {d:35,from:'雷州',to:'徐闻',km:60,note:'大陆最南端！中国大陆的尽头',phase:6,lat1:20.91,lng1:110.10,lat2:20.33,lng2:110.18,city:'徐闻',hotel:['汉庭酒店(徐闻店)','徐闻县城区','汉庭'],price:120},
+  // ── Phase 7: 海南西线环岛 ──
+  {d:36,from:'徐闻',to:'海口',km:0,note:'轮渡约1.5h，自行车可上船。踏上海南岛！',phase:7,ferry:true,lat1:20.33,lng1:110.18,lat2:20.04,lng2:110.35,city:'海口',hotel:['亚朵·省政府国兴大道店','大英山西三路1号 · 2025年新开','亚朵'],price:250},
+  {d:37,from:'海口',to:'',km:0,note:'骑楼老街、海大南门夜市、补给休整',phase:7,rest:true,lat1:20.04,lng1:110.35,city:'海口',price:250},
+  {d:38,from:'海口',to:'临高',km:85,note:'西线出发！经澄迈，椰风海韵',phase:7,lat1:20.04,lng1:110.35,lat2:19.91,lng2:109.69,city:'临高',hotel:['维也纳酒店(临高店)','临高县城区','维也纳'],price:150},
+  {d:39,from:'临高',to:'儋州',km:65,note:'千年古盐田，中国最早的日晒制盐点',phase:7,lat1:19.91,lng1:109.69,lat2:19.52,lng2:109.58,city:'儋州',hotel:['全季酒店(儋州那大店)','那大镇中心','全季'],price:160},
+  {d:40,from:'儋州',to:'昌江',km:80,note:'棋子湾日落，原始野性的西海岸',phase:7,lat1:19.52,lng1:109.58,lat2:19.30,lng2:109.06,city:'昌江',hotel:['昌江棋子湾开元度假酒店','棋子湾旅游度假区','本地'],price:180},
+  {d:41,from:'昌江',to:'东方',km:80,note:'鱼鳞洲风车阵，海边风电景观',phase:7,lat1:19.30,lng1:109.06,lat2:19.10,lng2:108.65,city:'东方',hotel:['全季酒店(东方店)','东方市区','全季'],price:150},
+  {d:42,from:'东方',to:'乐东',km:75,note:'尖峰岭热带雨林，南国风光',phase:7,lat1:19.10,lng1:108.65,lat2:18.75,lng2:109.17,city:'乐东',hotel:['维也纳酒店(乐东店)','乐东县城区','维也纳'],price:140},
+  {d:43,from:'乐东',to:'三亚',km:85,note:'终点！3100公里旅途完成，从此开始三亚生活 🏁',phase:7,lat1:18.75,lng1:109.17,lat2:18.25,lng2:109.50,city:'三亚',hotel:['亚朵·三亚湾凤凰路店','凤凰路374号','亚朵'],price:280},
+];
+
+// ── Route Cache ──
+let routeCache={};
+try{routeCache=JSON.parse(localStorage.getItem('rc-inland')||'{}')}catch(e){}
+function saveRC(){try{localStorage.setItem('rc-inland',JSON.stringify(routeCache))}catch(e){}}
+
+// ── Fuel plan ──
+function getFuel(km){
+  if(km<=0)return null;
+  if(km<=60)return{gels:3,banana:1,elec:1,meal:'到店吃正餐'};
+  if(km<=75)return{gels:4,banana:1,elec:1,meal:'到店吃正餐'};
+  if(km<=95)return{gels:5,banana:1,elec:2,meal:'到店吃正餐'};
+  if(km<=115)return{gels:5,banana:2,elec:2,meal:'到店吃正餐'};
+  return{gels:6,banana:2,elec:2,meal:'到店吃正餐'};
+}
+
+function updateCardDist(d,dist,time){
+  const el=document.querySelector('[data-day-dist="'+d+'"]');
+  if(el)el.textContent=dist+' km';
+}
+
+// ── Nav (render immediately, map interaction deferred) ──
+const nav=document.getElementById('phaseNav');
+const allBtn=document.createElement('button');
+allBtn.className='phase-btn active';allBtn.textContent='全部';
+allBtn.onclick=()=>filterPhase(null);nav.appendChild(allBtn);
+phases.forEach(p=>{
+  const b=document.createElement('button');b.className='phase-btn';b.textContent=p.name;
+  b.style.borderColor=p.color;b.dataset.phase=p.id;
+  b.onclick=()=>filterPhase(p.id);nav.appendChild(b);
+});
+function filterPhase(id){
+  clearRoute();
+  document.querySelectorAll('.phase-btn').forEach(b=>b.classList.remove('active'));
+  if(id===null)nav.querySelector('.phase-btn').classList.add('active');
+  else nav.querySelector(`[data-phase="${id}"]`).classList.add('active');
+  document.querySelectorAll('.phase-section').forEach(s=>{s.style.display=(id===null||s.dataset.phase==id)?'':'none'});
+  if(amapOK){
+    if(id===null)map.setFitView(null,false,[30,30,30,30]);
+    else{
+      const pLines=overviewLines.filter(l=>l._phase==id);
+      if(pLines.length)map.setFitView(pLines,false,[40,40,40,40]);
+    }
+    overviewLines.forEach(l=>l.setOptions({strokeOpacity:(id===null||l._phase==id)?.7:.15}));
+  }
+}
+
+// ── Cards (render immediately, no AMap dependency) ──
+const container=document.getElementById('cardsContainer');
+phases.forEach(p=>{
+  const sec=document.createElement('div');sec.className='phase-section';sec.dataset.phase=p.id;
+  sec.innerHTML=`<div class="phase-title"><span class="dot" style="background:${p.color}"></span>${p.name}<span class="meta">${p.meta}</span></div>`;
+  const grid=document.createElement('div');grid.className='cards-grid';
+  days.filter(d=>d.phase===p.id).forEach(day=>{
+    const card=document.createElement('div');
+    card.className='day-card'+(day.rest?' rest':'');
+    const route=day.rest?day.from+' 休息日':day.ferry?day.from+' → 渡轮 → '+day.to:day.from+' → '+day.to;
+    const ck='d'+day.d;
+    const cachedDist=routeCache[ck]?routeCache[ck].distance+' km':null;
+    const dist=day.rest?'休息':day.ferry?'渡轮':(cachedDist||(day.km>0?'~'+day.km+' km':''));
+    const searchCity=day.city||(day.to||day.from);
+    const h=day.hotel;
+    const brandColors={'亚朵':'var(--hotel)','全季':'#059669','汉庭':'#d97706','维也纳':'#7c3aed','本地':'var(--dim)'};
+    const brandBgs={'亚朵':'var(--hotel-light)','全季':'var(--price-light)','汉庭':'#fffbeb','维也纳':'#f5f3ff','本地':'var(--bg)'};
+    let hotelHtml='';
+    if(h){
+      const bc=brandColors[h[2]]||'var(--hotel)';
+      const bbg=brandBgs[h[2]]||'var(--hotel-light)';
+      hotelHtml=`<div style="display:flex;align-items:center;gap:.4rem;flex-wrap:wrap">
+        <a class="card-hotel" style="color:${bc};background:${bbg}" href="https://www.amap.com/search?query=${encodeURIComponent(h[0])}&city=${encodeURIComponent(searchCity)}" target="_blank">
+          ${ICON}<span class="h-name">${h[0]}</span><span class="h-addr">${h[1]}</span>
+        </a>
+        <span class="card-price">¥${day.price}/晚</span>
+      </div>`;
+    } else if(day.rest && day.price){
+      hotelHtml=`<div style="display:flex;align-items:center;gap:.4rem"><span class="card-price">续住 ¥${day.price}/晚</span></div>`;
+    }
+    const fuel=getFuel(cachedDist?routeCache[ck].distance:day.km);
+    let fuelHtml='';
+    if(fuel&&!day.rest&&!day.ferry){
+      fuelHtml=`<div class="card-fuel">
+        <span class="fuel-tag">🔋 能量胶×${fuel.gels}</span>
+        <span class="fuel-tag">🍌 香蕉×${fuel.banana}</span>
+        <span class="fuel-tag">💧 电解质×${fuel.elec}片</span>
+        <span class="fuel-tag">🍜 ${fuel.meal}</span>
+      </div>`;
+    } else if(day.rest){
+      fuelHtml=`<div class="card-fuel"><span class="fuel-tag">🍜 自由觅食，补充蛋白质</span></div>`;
+    }
+    card.innerHTML=`
+      <div class="card-top">
+        <span class="day-badge">D${String(day.d).padStart(2,'0')}</span>
+        <span class="day-dist" data-day-dist="${day.d}">${dist}</span>
+      </div>
+      <div class="card-route">${route}</div>
+      <div class="card-note">${day.note}</div>
+      ${fuelHtml}
+      ${hotelHtml}`;
+    if(!day.rest){card.style.borderLeft='4px solid '+p.color;card.querySelector('.day-badge').style.cssText=`background:${p.color}15;color:${p.color}`}
+    card.addEventListener('click',e=>{
+      if(e.target.closest('a'))return;
+      document.querySelectorAll('.day-card').forEach(c=>c.classList.remove('active'));
+      card.classList.add('active');
+      showRoute(day);
+    });
+    grid.appendChild(card);
+  });
+  sec.appendChild(grid);container.appendChild(sec);
+});
+
+// ── AMap: async load (non-blocking) ──
+let map=null,amapOK=false;
+const overviewLines=[];
+let activeRoute=null;
+
+function clearRoute(){
+  if(!amapOK)return;
+  if(activeRoute){map.remove(activeRoute);activeRoute=null}
+  overviewLines.forEach(l=>l.setOptions({strokeOpacity:.7}));
+  document.getElementById('routeInfo').style.display='none';
+}
+
+function showRoute(day){
+  if(!amapOK)return;
+  clearRoute();
+  const ri=document.getElementById('routeInfo');
+  if(day.rest||day.ferry||!day.lat2){
+    map.setZoomAndCenter(12,[day.lng1,day.lat1]);
+    return;
+  }
+  overviewLines.forEach(l=>l.setOptions({strokeOpacity:.15}));
+  ri.style.display='flex';
+  ri.querySelector('.ri-day').textContent='D'+String(day.d).padStart(2,'0');
+  ri.querySelector('.ri-route').textContent=day.from+' → '+day.to;
+  ri.querySelector('.ri-nav').href='https://uri.amap.com/navigation?from='+day.lng1+','+day.lat1+','+encodeURIComponent(day.from)+'&to='+day.lng2+','+day.lat2+','+encodeURIComponent(day.to)+'&mode=ride&callnative=1';
+  const ck='d'+day.d;
+  if(routeCache[ck]){
+    ri.querySelector('.ri-dist').textContent=routeCache[ck].distance+' km';
+    const h=Math.floor(routeCache[ck].time/60),m=routeCache[ck].time%60;
+    ri.querySelector('.ri-time').textContent='约'+h+'h'+(m>0?m+'min':'');
+  } else {
+    ri.querySelector('.ri-dist').textContent='计算中...';
+    ri.querySelector('.ri-time').textContent='';
+  }
+  const riding=new AMap.Riding({policy:0});
+  riding.search([day.lng1,day.lat1],[day.lng2,day.lat2],function(status,result){
+    if(status==='complete'&&result.routes&&result.routes.length){
+      const r=result.routes[0];
+      const dist=+(r.distance/1000).toFixed(1);
+      const time=Math.round(r.time/60);
+      const path=[];
+      if(r.rides)r.rides.forEach(rd=>{if(rd.path)rd.path.forEach(p=>path.push(p.lng!==undefined?[p.lng,p.lat]:p))});
+      if(path.length){
+        const color=phases.find(ph=>ph.id===day.phase).color;
+        activeRoute=new AMap.Polyline({path:path,strokeColor:color,strokeWeight:5,strokeOpacity:.9,lineJoin:'round',lineCap:'round'});
+        map.add(activeRoute);
+        map.setFitView([activeRoute],false,[60,60,60,60]);
+      } else {
+        map.setFitView(overviewLines.filter(l=>l._phase===day.phase),false,[40,40,40,40]);
+      }
+      ri.querySelector('.ri-dist').textContent=dist+' km';
+      const h2=Math.floor(time/60),m2=time%60;
+      ri.querySelector('.ri-time').textContent='约'+h2+'h'+(m2>0?m2+'min':'');
+      routeCache[ck]={distance:dist,time:time};
+      saveRC();
+      updateCardDist(day.d,dist,time);
+    }
+  });
+}
+
+function initAMap(){
+  try{
+    map=new AMap.Map('map',{zoom:5,center:[116,27],resizeEnable:true,animateEnable:true});
+    map.addControl(new AMap.Scale());
+    amapOK=true;
+  }catch(e){
+    document.getElementById('map').innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--dim);font-size:.9rem;text-align:center;padding:2rem">地图加载失败：'+e.message+'</div>';
+    return;
+  }
+  days.forEach(day=>{
+    if(day.lat2===undefined)return;
+    const c=phases.find(ph=>ph.id===day.phase).color;
+    const line=new AMap.Polyline({path:[[day.lng1,day.lat1],[day.lng2,day.lat2]],strokeColor:c,strokeWeight:3,strokeOpacity:.7});
+    line._phase=day.phase;
+    map.add(line);
+    overviewLines.push(line);
+  });
+  const majorStops=[
+    {n:'淄博',lt:36.81,ln:118.05},{n:'沂水',lt:35.79,ln:118.63},
+    {n:'临沂',lt:35.10,ln:118.35},{n:'徐州',lt:34.26,ln:117.19},
+    {n:'固镇',lt:33.32,ln:117.32},{n:'蚌埠',lt:32.92,ln:117.39},
+    {n:'定远',lt:32.51,ln:117.68},{n:'合肥',lt:31.82,ln:117.23},
+    {n:'安庆',lt:30.53,ln:117.06},{n:'望江',lt:30.13,ln:116.55},
+    {n:'九江',lt:29.71,ln:115.97},{n:'南昌',lt:28.68,ln:115.86},
+    {n:'吉安',lt:27.11,ln:114.99},{n:'赣州',lt:25.83,ln:114.94},
+    {n:'韶关',lt:24.81,ln:113.59},{n:'广州',lt:23.13,ln:113.26},
+    {n:'阳西',lt:21.75,ln:111.62},{n:'湛江',lt:21.27,ln:110.36},
+    {n:'雷州',lt:20.91,ln:110.10},{n:'海口',lt:20.04,ln:110.35},
+    {n:'三亚',lt:18.25,ln:109.50},
+  ];
+  majorStops.forEach(s=>{
+    const isEnd=s.n==='淄博'||s.n==='三亚';
+    const m=new AMap.CircleMarker({center:[s.ln,s.lt],radius:isEnd?8:5,fillColor:isEnd?'#ef4444':'#8b5c2a',strokeColor:'#fff',strokeWeight:2,fillOpacity:1});
+    m.setLabel({content:'<span style="font-size:'+(isEnd?'13':'11')+'px;font-weight:'+(isEnd?'700':'500')+'">'+s.n+'</span>',direction:'top',offset:new AMap.Pixel(0,-5)});
+    map.add(m);
+  });
+  map.setFitView(null,false,[30,30,30,30]);
+
+  // Distance prefetch
+  (async function(){
+    const rideDays=days.filter(d=>!d.rest&&!d.ferry&&d.lat2);
+    rideDays.forEach(d=>{const ck='d'+d.d;if(routeCache[ck])updateCardDist(d.d,routeCache[ck].distance,routeCache[ck].time)});
+    const uncached=rideDays.filter(d=>!routeCache['d'+d.d]);
+    const prog=document.getElementById('distProgress');
+    if(!uncached.length){prog.style.display='none';return}
+    const progCount=document.getElementById('distCount');
+    const progBar=document.getElementById('distBar');
+    progCount.textContent='0/'+uncached.length;
+    let done=0;
+    for(const day of uncached){
+      await new Promise(resolve=>{
+        const r=new AMap.Riding({policy:0});
+        r.search([day.lng1,day.lat1],[day.lng2,day.lat2],function(status,result){
+          if(status==='complete'&&result.routes&&result.routes.length){
+            const rt=result.routes[0];
+            const dist=+(rt.distance/1000).toFixed(1);
+            const time=Math.round(rt.time/60);
+            routeCache['d'+day.d]={distance:dist,time:time};
+            updateCardDist(day.d,dist,time);
+          }
+          done++;
+          progCount.textContent=done+'/'+uncached.length;
+          progBar.style.width=Math.round(done/uncached.length*100)+'%';
+          resolve();
+        });
+      });
+      await new Promise(r=>setTimeout(r,300));
+    }
+    saveRC();
+    setTimeout(()=>{prog.style.display='none'},1000);
+  })();
+}
+
+// Load AMap dynamically (non-blocking)
+(function(){
+  const prog=document.getElementById('distProgress');
+  // Show cached distances even without AMap
+  days.filter(d=>!d.rest&&!d.ferry&&d.lat2).forEach(d=>{
+    const ck='d'+d.d;if(routeCache[ck])updateCardDist(d.d,routeCache[ck].distance,routeCache[ck].time);
+  });
+  var s=document.createElement('script');
+  s.src='https://webapi.amap.com/maps?v=2.0&key=4a249693b338d35470156a829a852b59&plugin=AMap.Riding,AMap.Scale';
+  s.onload=function(){initAMap()};
+  s.onerror=function(){
+    document.getElementById('map').innerHTML='<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--dim);font-size:.9rem;text-align:center;padding:2rem">地图需要通过 HTTP 访问才能加载<br>请在终端运行 <code style="background:var(--border);padding:.2rem .5rem;border-radius:4px">cd ~/Desktop && python3 -m http.server 8080</code><br>然后访问 <code style="background:var(--border);padding:.2rem .5rem;border-radius:4px">http://localhost:8080</code></div>';
+    prog.style.display='none';
+  };
+  document.head.appendChild(s);
+})();
+
+// ── Checklist ──
+const clData=[
+  {cat:'车辆 + 车载工具',items:[
+    {id:'bike',t:'Camp GX 380 · 22速',bought:true},
+    {id:'rack',t:'后货架 + 驮包',bought:true},
+    {id:'crossbag',t:'横梁包',bought:true},
+    {id:'frontlight',t:'前车灯（USB充电）',bought:true},
+    {id:'rearlight',t:'后车灯（日行闪烁款）',bought:true},
+    {id:'fender',t:'挡泥板',bought:true},
+    {id:'seat',t:'硅胶软垫坐垫',bought:true},
+    {id:'tube',t:'补胎套装（补胎片+撬胎棒）',bought:true},
+    {id:'pump',t:'便携打气筒',bought:true},
+    {id:'sparetube',t:'备用内胎 ×2'},
+    {id:'tool',t:'多功能内六角工具'},
+    {id:'oil',t:'链条油一小瓶'},
+    {id:'lock',t:'车锁（密码锁）'},
+  ]},
+  {cat:'骑行衣物',items:[
+    {id:'shorts',t:'骑行裤 ×1',bought:true},
+    {id:'sportbra',t:'运动内衣 ×2-3（速干）'},
+    {id:'sporttop',t:'速干运动上衣 ×2'},
+    {id:'casual',t:'休闲衣物 ×1 套（轻薄T恤+运动短裤）'},
+    {id:'underwear',t:'速干内裤 ×3'},
+    {id:'socks',t:'运动速干袜 ×3 双'},
+    {id:'jacket',t:'冲锋衣 ×1（防风防雨）'},
+    {id:'fleece',t:'薄抓绒 ×1（叠穿保暖）'},
+    {id:'raincoat',t:'一次性雨衣 ×2'},
+  ]},
+  {cat:'防护装备',items:[
+    {id:'helmet',t:'头盔'},
+    {id:'gloves',t:'骑行手套',bought:true},
+    {id:'glasses',t:'骑行风镜 / 运动墨镜'},
+    {id:'scarf',t:'防晒冰丝面巾',bought:true},
+    {id:'sunscreen',t:'防晒霜 SPF50+'},
+  ]},
+  {cat:'电子设备',items:[
+    {id:'phone-nav',t:'导航手机 + 手机支架',bought:true},
+    {id:'phone-comm',t:'通讯手机（位置共享+日常联络）'},
+    {id:'cam1',t:'Insta360 Go Ultra（前胸磁吸/手持）',bought:true},
+    {id:'earphone',t:'运动蓝牙耳机',bought:true},
+    {id:'powerbank',t:'充电宝 20000mAh'},
+    {id:'cable',t:'充电线 + 快充头（一拖三线）'},
+  ]},
+  {cat:'补给 & 饮食',items:[
+    {id:'gel',t:'能量胶（全程约270根）',bought:true},
+    {id:'lcarnitine',t:'左旋肉碱控能饮',bought:true},
+    {id:'bottle',t:'水壶 ×2',bought:true},
+    {id:'electrolyte',t:'电解质泡腾片（全程约100片）'},
+  ]},
+  {cat:'日用 & 恢复',items:[
+    {id:'toothbrush',t:'牙刷牙膏（小支装）'},
+    {id:'towel',t:'速干小毛巾'},
+    {id:'wipes',t:'湿纸巾一大包'},
+    {id:'detergent',t:'洗衣液小瓶'},
+    {id:'medkit',t:'小药包（创可贴、碘伏、布洛芬、蒙脱石散、风油精）'},
+    {id:'fascia',t:'筋膜球 ×1'},
+    {id:'massager',t:'便携筋膜枪 mini'},
+    {id:'compress',t:'压缩袜 ×1 双'},
+  ]},
+  {cat:'安全',items:[
+    {id:'flashlight',t:'战术手电',bought:true},
+    {id:'insurance',t:'骑行意外险'},
+    {id:'reflector',t:'反光条 / 反光背心'},
+  ]},
+];
+
+let saved={};
+try{saved=JSON.parse(localStorage.getItem('cl-state-inland')||'{}');}catch(e){}
+clData.forEach(c=>c.items.forEach(it=>{if(it.bought&&saved[it.id]===undefined)saved[it.id]=true;}));
+
+function renderCL(){
+  const grid=document.getElementById('clGrid');
+  grid.innerHTML='';
+  let total=0,done=0;
+  clData.forEach(c=>{
+    const cat=document.createElement('div');cat.className='cl-cat';
+    cat.innerHTML='<h3>'+c.cat+'</h3>';
+    c.items.forEach(it=>{
+      total++;
+      const checked=!!saved[it.id];
+      if(checked)done++;
+      const row=document.createElement('label');
+      row.className='cl-item'+(checked?' checked':'');
+      row.innerHTML='<input type="checkbox"'+(checked?' checked':'')+'>'+
+        '<span>'+it.t+(it.bought?'<span class="bought-tag">已购</span>':'')+'</span>';
+      row.querySelector('input').addEventListener('change',function(){
+        saved[it.id]=this.checked;
+        try{localStorage.setItem('cl-state-inland',JSON.stringify(saved));}catch(e){}
+        renderCL();
+      });
+      cat.appendChild(row);
+    });
+    grid.appendChild(cat);
+  });
+  document.getElementById('clDone').textContent=done;
+  document.getElementById('clTotal').textContent=total;
+  document.getElementById('clBar').style.width=Math.round(done/total*100)+'%';
+}
+renderCL();
+
+// ── PWA Install Banner ──
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  deferredPrompt=e;
+  document.getElementById('pwaBanner').classList.add('show');
+});
+document.getElementById('pwaInstall')&&document.getElementById('pwaInstall').addEventListener('click',()=>{
+  if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('pwaBanner').classList.remove('show')});}
+});
+document.getElementById('pwaClose')&&document.getElementById('pwaClose').addEventListener('click',()=>{
+  document.getElementById('pwaBanner').classList.remove('show');
+});
+
+// iOS standalone detection — show iOS-specific install hint
+if(window.navigator.standalone===false){
+  const b=document.getElementById('pwaBanner');
+  b.querySelector('.pwa-text').innerHTML='<strong>添加到主屏幕</strong>点击底部 <span style="font-size:1.1em">⎙</span> 分享按钮 → 选择「添加到主屏幕」';
+  b.querySelector('.pwa-btn').style.display='none';
+  b.classList.add('show');
+}
+
+// ── Scroll-to-top float button ──
+document.getElementById('floatTop').addEventListener('click',()=>{
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+// ── Service Worker ──
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+  navigator.serviceWorker.register('./sw.js').catch(()=>{});
+}
+</script>
+
+<div class="pwa-banner" id="pwaBanner">
+  <div class="pwa-text"><strong>安装骑行计划 App</strong>添加到手机主屏幕，随时查看路线</div>
+  <button class="pwa-btn" id="pwaInstall">安装</button>
+  <button class="pwa-close" id="pwaClose">✕</button>
+</div>
+<button class="nav-btn-float" id="floatTop" aria-label="回到顶部">↑</button>
+</body>
+</html>
